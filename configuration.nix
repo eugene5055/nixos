@@ -10,14 +10,11 @@
   imports = [
     ./hardware-configuration.nix
     ./customConfig
-    # inputs.lanzaboote.nixosModules.lanzaboote
   ];
 
-  # Nix Package Manager Optimization
+  # Binary Cache for community packages (prevents local compiling)
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
     };
@@ -32,7 +29,7 @@
   # hardware.opengl was renamed to hardware.graphics in NixOS 24.11+
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # Standard for Steam/Wine compatibility
+    enable32Bit = true; # Required for Steam/Wine
   };
 
   glf.nvidia_config = {
@@ -41,7 +38,7 @@
     nvidiaBusId = "PCI:1:0:0"; # RTX 5090
   };
 
-  # Services & Performance
+  # Performance and Overclocking Tools
   services.lact.enable = true;
   services.flatpak.enable = true;
 
@@ -50,9 +47,7 @@
     kernelParams = [
       "amdgpu.ppfeaturemask=0xffffffff"
       "nosplit_lock_mitigate"
-      "nvidia-drm.modeset=1"
-      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
-      "nvidia-drm.fbdev=1"
+      "nvidia-drm.fbdev=1" # Required for smooth console/Wayland transition
     ];
 
     # Lanzaboote Secure Boot Configuration
@@ -71,18 +66,15 @@
   # Gaming & Steam Configuration
   programs.steam = {
     enable = true;
-    gamescopeSession.enable = true; # Automatically includes gamescope
+    gamescopeSession.enable = true; # Automatically includes gamescope and mangohud
     protontricks.enable = true;
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
-
-    # Extra packages for monitoring and local utilities
-    extraPackages = with pkgs; [ mangohud ];
   };
 
   programs.gamemode = {
     enable = true;
-    settings.cpu.governor = "ignore";
+    settings.cpu.governor = "ignore"; # Handled by platform profiles
   };
 
   # System Environment
@@ -93,6 +85,7 @@
   ];
 
   # Moza Racing Hardware Support
+  # uaccess tag grants current user permission without needing 'dialout' or 'video' groups
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="1eaf", MODE="0666", TAG+="uaccess"
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
@@ -110,7 +103,7 @@
   users.users.radean = {
     isNormalUser = true;
     description = "Radean";
-    extraGroups = [ "networkmanager" "wheel" "dialout" ]; # "video" and "gamemode" removed (handled by uaccess/systemd)
+    extraGroups = [ "networkmanager" "wheel" ];
   };
 
   networking = {
@@ -127,8 +120,8 @@
     noto-fonts-color-emoji
   ];
 
-  # System State
+  # System State - Do not change this unless you did a fresh install of 2026
   system.stateVersion = "26.05";
-  glf.mangohud.configuration = "disabled";
 
+  glf.mangohud.configuration = "disabled";
 }
