@@ -130,4 +130,10 @@
   # System State
   system.stateVersion = "26.05";
   glf.mangohud.configuration = "disabled";
+
+  programs.ssh.startAgent = true;
+  programs.ssh.extraConfig = ''
+  AddKeysToAgent yes
+'';
+
 }
