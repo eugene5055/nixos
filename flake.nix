@@ -3,10 +3,10 @@
 
 
   inputs = {
-    glf-channels.url = "git+https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/glf-os-channels.git?ref=main";
+    glf-channels.url = "git+https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git?ref=main";
     nixpkgs.follows = "glf-channels/nixpkgs";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    glf.url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os.git?ref=main";
+    glf.url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os.git?ref=testing";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/master";
@@ -14,7 +14,7 @@
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
+  outputs = inputs@{ self, nixpkgs, glf, nixpkgs-unstable, ... }:
     let
       system = "x86_64-linux";
     in

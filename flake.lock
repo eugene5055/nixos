@@ -60,16 +60,16 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1768051215,
-        "narHash": "sha256-ivqK4YPODdZBeEU41g+t1aSytes8VfbLH4TrLpmRz6M=",
-        "ref": "main",
-        "rev": "48de2d866b040f425608b63ab792a47f3eb393e4",
-        "revCount": 336,
+        "lastModified": 1768047326,
+        "narHash": "sha256-zxOLGs2ws1MgLJgFpGJlRxjPTwHFfIXCSIRkJsFukrE=",
+        "ref": "testing",
+        "rev": "b7dc15a9e921e88fdedcc9fb5434ce795dc9df48",
+        "revCount": 378,
         "type": "git",
         "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os.git"
       },
       "original": {
-        "ref": "main",
+        "ref": "testing",
         "type": "git",
         "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os.git"
       }
@@ -80,18 +80,18 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1764926816,
-        "narHash": "sha256-ZwlQH2qQFGD3zcVpDdDpSAHeHaPWP7Tx91VAJfxrUvg=",
+        "lastModified": 1764189562,
+        "narHash": "sha256-RbXSj8ADqJFooPXtybB6ZYxPsViiOpYmjRxvsEsv6Kg=",
         "ref": "main",
-        "rev": "425fa0d43b8a32627f3b5c268ab421371a0670d1",
-        "revCount": 3,
+        "rev": "b45641be64e6bd1cdf5d9c9d000edccb88171eb1",
+        "revCount": 5,
         "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/glf-os-channels.git"
+        "url": "https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git"
       },
       "original": {
         "ref": "main",
         "type": "git",
-        "url": "https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/glf-os-channels.git"
+        "url": "https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git"
       }
     },
     "lanzaboote": {
