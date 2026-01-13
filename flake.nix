@@ -17,26 +17,36 @@
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, ... }:
     let
       system = "x86_64-linux";
-      # This block is MANDATORY for GLF-OS modules
-      pkgs-unstable = import nixpkgs-unstable {
-        inherit system;
-        config.allowUnfree = true;
-      };
     in
     {
+      # Modern 2026 Formatter
       formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt-rfc-style;
 
       nixosConfigurations."GLF-OS" = nixpkgs.lib.nixosSystem {
         inherit system;
-        # You MUST inherit pkgs-unstable here so modules can see it
-        specialArgs = { inherit inputs pkgs-unstable; };
+
+        # Use a function for specialArgs to allow lazy evaluation of pkgs-unstable
+        specialArgs = {
+          inherit inputs;
+          pkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        };
+
         modules = [
           ./configuration.nix
           inputs.glf.nixosModules.default
           inputs.lanzaboote.nixosModules.lanzaboote
+
+          # Consolidated System Settings Module
           {
             nixpkgs.config.allowUnfree = true;
-            nix.settings.experimental-features = [ "nix-command" "flakes" ];
+            nix.settings = {
+              experimental-features = [ "nix-command" "flakes" ];
+              # 2026 Optimization: Auto-detects and uses binary caches for GLF-OS
+              auto-optimise-store = true;
+            };
           }
         ];
       };
