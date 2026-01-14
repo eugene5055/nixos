@@ -69,10 +69,6 @@
     protontricks.enable = true;
   };
 
-  programs.gamemode = {
-    enable = true;
-  };
-
   # System Environment
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
