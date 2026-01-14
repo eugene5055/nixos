@@ -48,6 +48,7 @@
       "amdgpu.ppfeaturemask=0xffffffff"
       "nosplit_lock_mitigate"
       "nvidia-drm.fbdev=1" # Required for smooth console/Wayland transition
+      "split_lock_detect=off"
     ];
 
     # Lanzaboote Secure Boot Configuration
