@@ -51,7 +51,6 @@
       "split_lock_detect=off"
     ];
 
-  boot.loader.systemd-boot.configurationLimit = 3;
 
     # Lanzaboote Secure Boot Configuration
     loader = {
@@ -62,6 +61,7 @@
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
+      configurationLimit = 3;
     };
   };
 
