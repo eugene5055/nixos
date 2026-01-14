@@ -51,6 +51,8 @@
       "split_lock_detect=off"
     ];
 
+  boot.loader.systemd-boot.configurationLimit = 3;
+
     # Lanzaboote Secure Boot Configuration
     loader = {
       systemd-boot.enable = lib.mkForce false;
