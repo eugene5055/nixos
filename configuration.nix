@@ -88,6 +88,11 @@
     KERNEL=="hidraw*", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
   '';
 
+  fileSystems."/run/media/radean" = {
+    device = "/dev/disk/by-uuid/de66f12c-d787-485d-a207-3590e64045ae";
+    fsType = "btrfs";
+    options = [ "defaults" "compress=zstd" "nofail" ];
+  };
 
   # Desktop Environment
   glf.environment = {
