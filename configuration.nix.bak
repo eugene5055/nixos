@@ -48,6 +48,7 @@
       "amdgpu.ppfeaturemask=0xffffffff"
       "nosplit_lock_mitigate"
       "nvidia-drm.fbdev=1" # Required for smooth console/Wayland transition
+      "split_lock_detect=off"
     ];
 
     # Lanzaboote Secure Boot Configuration
@@ -114,14 +115,7 @@
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  fonts.packages = with pkgs; [
-    corefonts
-    vista-fonts
-    noto-fonts-color-emoji
-  ];
-
   # System State - Do not change this unless you did a fresh install of 2026
   system.stateVersion = "26.05";
 
-  glf.mangohud.configuration = "disabled";
 }
