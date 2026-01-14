@@ -57,20 +57,6 @@
       systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
       systemd-boot.edk2-uefi-shell.enable = true;
-      # Create the menu entry manually for the shell
-      systemd-boot.extraEntries = {
-        "uefi-shell.conf" = ''
-          title UEFI Shell
-          efi /shellx64.efi
-        '';
-
-        "windows.conf" = ''
-          title Windows
-          efi /shellx64.efi
-          # Replace YOUR_HANDLE with the ID you found (e.g., FS1 or HD0b)
-          options -noconsole -1 FS1:\EFI\Microsoft\Boot\bootmgfw.efi
-    '';
-  };
     };
 
 
