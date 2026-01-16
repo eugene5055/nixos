@@ -115,4 +115,5 @@
 ];
 
   system.stateVersion = "26.05";
+  glf.mangohud.configuration = "light";
 }
