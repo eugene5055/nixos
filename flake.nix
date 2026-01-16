@@ -4,8 +4,8 @@
 
   inputs = {
     glf-channels.url = "git+https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git?ref=main";
-    nixpkgs.follows = "glf-channels/nixpkgs";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.follows = "nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     glf.url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os.git?ref=testing";
 
     lanzaboote = {

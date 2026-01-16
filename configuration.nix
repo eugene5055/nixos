@@ -12,6 +12,14 @@
     ./customConfig
   ];
 
+
+  nixpkgs.overlays = [
+  (self: super: {
+    lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin-dummy; touch $out/bin-dummy/lha";
+  })
+];
+
+
   # Nix Package Manager Settings
   nix = {
     settings = {

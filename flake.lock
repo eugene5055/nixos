@@ -168,16 +168,16 @@
     },
     "nixpkgs-unstable_3": {
       "locked": {
-        "lastModified": 1768305791,
-        "narHash": "sha256-AIdl6WAn9aymeaH/NvBj0H9qM+XuAuYbGMZaP0zcXAQ=",
+        "lastModified": 1768467226,
+        "narHash": "sha256-Y/Q3pFk5htWkitAXIKGSVYzdt7fNn74YXSJS5GjSPZ4=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1412caf7bf9e660f2f962917c14b1ea1c3bc695e",
+        "rev": "0827ca4b685736d2de7f7b1f80f3be996514ef59",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-unstable",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -227,8 +227,7 @@
         "glf-channels": "glf-channels",
         "lanzaboote": "lanzaboote",
         "nixpkgs": [
-          "glf-channels",
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "nixpkgs-unstable": "nixpkgs-unstable_3"
       }
