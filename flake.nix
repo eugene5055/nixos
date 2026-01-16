@@ -11,7 +11,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, glf, nixpkgs, ... }@inputs:
     let
       system = "x86_64-linux";
     in
