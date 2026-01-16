@@ -12,20 +12,11 @@
     ./customConfig
   ];
 
-
-  nixpkgs.overlays = [
-  (self: super: {
-    lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin-dummy; touch $out/bin-dummy/lha";
-  })
-];
-
-
   # Nix Package Manager Settings
   nix = {
     settings = {
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
-      experimental-features = [ "nix-command" "flakes" ];
     };
     gc = {
       automatic = true;
@@ -37,7 +28,7 @@
   # Graphics & Hardware
   hardware.graphics = {
     enable = true;
-    enable32Bit = true; # Required for Steam and Wine
+    enable32Bit = true;
   };
 
   glf.nvidia_config = {
@@ -46,8 +37,6 @@
     nvidiaBusId = "PCI:1:0:0"; # RTX 5090
   };
 
-  # Performance and Overclocking Tools
-  # LACT now supports Nvidia GPUs via NVML
   services.lact.enable = true;
   services.flatpak.enable = true;
 
@@ -55,19 +44,15 @@
   boot = {
     kernelParams = [
       "nosplit_lock_mitigate"
-      "nvidia-drm.fbdev=1" # Required for smooth console/Wayland transition
+      "nvidia-drm.fbdev=1"
       "split_lock_detect=off"
     ];
 
-
-    # Lanzaboote Secure Boot Configuration
     loader = {
-      systemd-boot.enable = lib.mkForce false;
       efi.canTouchEfiVariables = true;
+      # Adds EDK2 to the systemd-boot menu
       systemd-boot.edk2-uefi-shell.enable = true;
     };
-
-
 
     lanzaboote = {
       enable = true;
@@ -75,8 +60,6 @@
       configurationLimit = 3;
     };
   };
-
-
 
   # Gaming & Steam Configuration
   programs.steam = {
@@ -87,12 +70,11 @@
   # System Environment
   environment.systemPackages = with pkgs; [
     nvtopPackages.nvidia
-    edk2-uefi-shell
     vulkan-tools
+    edk2-uefi-shell # Kept: allows access to the .efi binary for manual signing/tasks
   ];
 
   # Moza Racing Hardware Support
-  # uaccess tag grants current user permission without needing 'dialout' or 'video' groups
   services.udev.extraRules = ''
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="1eaf", MODE="0666", TAG+="uaccess"
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
@@ -106,7 +88,6 @@
     options = [ "defaults" "compress=zstd" "nofail" ];
   };
 
-  # Desktop Environment
   glf.environment = {
     type = "plasma";
     edition = "standard";
@@ -127,6 +108,11 @@
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
 
-  # System State - Do not change this unless you did a fresh install of 2026
+  nixpkgs.overlays = [
+  (self: super: {
+    lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
+  })
+];
+
   system.stateVersion = "26.05";
 }
