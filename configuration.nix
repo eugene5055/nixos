@@ -42,11 +42,25 @@
 
   # Kernel & Boot
   boot = {
-    kernelParams = [
-      "nosplit_lock_mitigate"
-      "nvidia-drm.fbdev=1"
+    # Using mkForce to ensure these take priority over GLF-OS defaults
+    kernelParams = pkgs.lib.mkForce [
+      "usbcore.autosuspend=-1"
+      "nosplit_lock_mitigate"     # Cleaned duplicate
       "split_lock_detect=off"
+      "nvidia-drm.modeset=1"
+      "nvidia-drm.fbdev=1"        # Cleaned duplicate
+      "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
+      "nvidia.NVreg_OpenRmEnableUnsupportedGpus=1"
+      "mitigations=off"           # Gain 5-15% CPU speed (Note: Reduces security)
+      "nowatchdog"                # Disables watchdog to free up CPU cycles
+      "quiet"                     # Reduces log overhead
+      "splash"
+      "loglevel=3"                # Set to 3 for less disk/log activity
+      "lsm=landlock,yama,bpf"
     ];
+
+    # Stick with latest STABLE to keep NVIDIA working
+    kernelPackages = pkgs.lib.mkForce pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
