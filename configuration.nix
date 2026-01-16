@@ -68,12 +68,28 @@
       systemd-boot.edk2-uefi-shell.enable = true;
     };
 
+
     lanzaboote = {
       enable = true;
       pkiBundle = "/var/lib/sbctl";
       configurationLimit = 3;
     };
   };
+
+    services.auto-cpufreq.enable = true;
+  services.auto-cpufreq.settings = {
+    charger = {
+      governor = "performance";
+      turbo = "always";
+    };
+    battery = {
+      governor = "powersave";
+      turbo = "auto";
+    };
+  };
+
+    services.power-profiles-daemon.enable = false;
+
 
   # Gaming & Steam Configuration
   programs.steam = {
