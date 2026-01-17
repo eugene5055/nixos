@@ -2,7 +2,7 @@
   description = "GLF-OS ISO Configuration - Optimized 2026";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     glf-channels.url = "git+https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git?ref=main";
     glf.url = "git+https://framagit.org/gaming-linux-fr/glf-os/glf-os.git?ref=testing";
     lanzaboote = {

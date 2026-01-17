@@ -1,10 +1,4 @@
-{
-  inputs,
-  config,
-  pkgs,
-  lib,
-  ...
-}:
+{ inputs, config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -12,11 +6,20 @@
     ./customConfig
   ];
 
-  # Nix Package Manager Settings
+  # --- Nix Package Manager & Optimization Settings ---
   nix = {
     settings = {
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
+      experimental-features = [ "nix-command" "flakes" ];
+
+      # 14900K Optimization: Whitelist the raptorlake feature for local builds
+      system-features = [ "gccarch-raptorlake" "benchmark" "big-parallel" "kvm" "nixos-test" ];
+
+      # Maximize 32-thread utilization
+      max-jobs = "auto";
+      cores = 0;
+      auto-optimise-store = true;
     };
     gc = {
       automatic = true;
@@ -25,10 +28,15 @@
     };
   };
 
-  # Graphics & Hardware
+  # --- Hardware & GPU Configuration ---
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [
+      intel-media-driver # i9-14900K QuickSync for background video tasks
+      intel-vaapi-driver
+      libvdpau-va-gl
+    ];
   };
 
   glf.nvidia_config = {
@@ -37,37 +45,39 @@
     nvidiaBusId = "PCI:1:0:0"; # RTX 5090
   };
 
-  services.lact.enable = true;
+  # Active Thermal Management for Raptor Lake Stability
+  services.thermald.enable = true;
+  services.lact.enable = true; # GPU Control
   services.flatpak.enable = true;
 
-  # Kernel & Boot
+  # --- CPU Performance & Scheduling ---
+  # Performance governor is vital for Intel Thread Director efficiency
+  powerManagement.cpuFreqGovernor = "performance";
+
+  # --- Kernel & Boot ---
   boot = {
-    # Using mkForce to ensure these take priority over GLF-OS defaults
     kernelParams = pkgs.lib.mkForce [
       "usbcore.autosuspend=-1"
-      "nosplit_lock_mitigate"     # Cleaned duplicate
+      "nosplit_lock_mitigate"
       "split_lock_detect=off"
       "nvidia-drm.modeset=1"
-      "nvidia-drm.fbdev=1"        # Cleaned duplicate
+      "nvidia-drm.fbdev=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       "nvidia.NVreg_OpenRmEnableUnsupportedGpus=1"
-      "mitigations=off"           # Gain 5-15% CPU speed (Note: Reduces security)
-      "nowatchdog"                # Disables watchdog to free up CPU cycles
-      "quiet"                     # Reduces log overhead
+      "mitigations=off"           # Extreme 14900K performance
+      "nowatchdog"
+      "quiet"
       "splash"
-      "loglevel=3"                # Set to 3 for less disk/log activity
+      "loglevel=3"
       "lsm=landlock,yama,bpf"
     ];
 
-    # Stick with latest STABLE to keep NVIDIA working
     kernelPackages = pkgs.lib.mkForce pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
-      # Adds EDK2 to the systemd-boot menu
       systemd-boot.edk2-uefi-shell.enable = true;
     };
-
 
     lanzaboote = {
       enable = true;
@@ -76,33 +86,28 @@
     };
   };
 
-    services.auto-cpufreq.enable = true;
-  services.auto-cpufreq.settings = {
-    charger = {
-      governor = "performance";
-      turbo = "always";
-    };
-    battery = {
-      governor = "powersave";
-      turbo = "auto";
-    };
+  # --- Global Raptor Lake Optimization ---
+  nixpkgs.hostPlatform = {
+    system = "x86_64-linux";
+    gcc.arch = "raptorlake";
+    gcc.tune = "raptorlake";
   };
 
-    services.power-profiles-daemon.enable = false;
+  # CCache to speed up subsequent source updates
+  programs.ccache.enable = true;
 
+  # --- System Environment & Gaming ---
+  environment.systemPackages = with pkgs; [
+    nvtopPackages.full      # Monitor Intel iGPU + NVIDIA simultaneously
+    btop                   # Visual P/E-core usage
+    vulkan-tools
+    intel-gpu-tools        # For intel_gpu_top
+  ];
 
-  # Gaming & Steam Configuration
   programs.steam = {
     enable = true;
     protontricks.enable = true;
   };
-
-  # System Environment
-  environment.systemPackages = with pkgs; [
-    nvtopPackages.nvidia
-    vulkan-tools
-    edk2-uefi-shell # Kept: allows access to the .efi binary for manual signing/tasks
-  ];
 
   # Moza Racing Hardware Support
   services.udev.extraRules = ''
@@ -112,6 +117,7 @@
     KERNEL=="hidraw*", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
   '';
 
+  # --- File Systems & Users ---
   fileSystems."/run/media/radean" = {
     device = "/dev/disk/by-uuid/de66f12c-d787-485d-a207-3590e64045ae";
     fsType = "btrfs";
@@ -123,7 +129,6 @@
     edition = "standard";
   };
 
-  # User & Localization
   users.users.radean = {
     isNormalUser = true;
     description = "Radean";
@@ -139,10 +144,10 @@
   i18n.defaultLocale = "en_US.UTF-8";
 
   nixpkgs.overlays = [
-  (self: super: {
-    lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
-  })
-];
+    (self: super: {
+      lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
+    })
+  ];
 
   system.stateVersion = "26.05";
   glf.mangohud.configuration = "light";
