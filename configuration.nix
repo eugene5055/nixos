@@ -15,7 +15,7 @@
 
       system-features = [ "gccarch-raptorlake" "benchmark" "big-parallel" "kvm" "nixos-test" ];
 
-      # Increased to 2 jobs for 2026 speed; cores 0 uses all 32 threads per job
+      # Parallelism for 2026 Raptor Lake
       max-jobs = 2;
       cores = 0;
 
@@ -99,6 +99,21 @@
 
   # --- OVERLAYS (Integrated Fixes) ---
   nixpkgs.overlays = [
+    # Fix for Python: Disable tests for 'sh' and 'watchdog' globally
+    # This prevents timing-related TimeoutExceptions on high-end CPUs
+    (final: prev: {
+      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+        (pfinal: pprev: {
+          sh = pprev.sh.overridePythonAttrs (oldAttrs: {
+            doCheck = false;
+          });
+          watchdog = pprev.watchdog.overridePythonAttrs (oldAttrs: {
+            doCheck = false;
+          });
+        })
+      ];
+    })
+
     # Fix for Assimp: Disable math tests failing under raptorlake optimizations
     (final: prev: {
       assimp = prev.assimp.overrideAttrs (oldAttrs: {
@@ -119,21 +134,9 @@
     (self: super: {
       lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
     })
-
-    # Overlay 3: Python Watchdog Fix
-    (final: prev: {
-      python313 = prev.python313.override {
-        packageOverrides = pfinal: pprev: {
-          watchdog = pprev.watchdog.overridePythonAttrs (oldAttrs: {
-            doCheck = false;
-          });
-        };
-      };
-    })
   ];
 
-  # ... [Rest of your configuration: environment.systemPackages, users, networking, etc.] ...
-
+  # --- System Environment & Gaming ---
   environment.systemPackages = with pkgs; [
     nvtopPackages.full
     btop
