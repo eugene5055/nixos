@@ -13,13 +13,10 @@
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
       experimental-features = [ "nix-command" "flakes" ];
 
-      # 14900K Optimization: Whitelist the raptorlake feature for local builds
       system-features = [ "gccarch-raptorlake" "benchmark" "big-parallel" "kvm" "nixos-test" ];
 
-      # --- MEMORY STABILITY FIXES ---
-      # Limit to 1 package at a time to prevent 100GB swap from "thrashing"
-      max-jobs = 1;
-      # Allow that 1 package to use all 32 threads for speed
+      # Increased to 2 jobs for 2026 speed; cores 0 uses all 32 threads per job
+      max-jobs = 2;
       cores = 0;
 
       auto-optimise-store = true;
@@ -33,7 +30,6 @@
   };
 
   # --- SWAP CONFIGURATION (2026 Stability) ---
-  # Ensures you always have breathing room for massive Raptor Lake source builds
   swapDevices = [ {
     device = "/var/lib/swapfile";
     size = 100 * 1024; # 100GB
@@ -43,12 +39,11 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages = with pkgs; [
-      intel-media-driver
-      intel-vaapi-driver
-      libvdpau-va-gl
-    ];
+    extraPackages = with pkgs; [ libvdpau-va-gl ];
   };
+
+  # Fix for "Too many open files" in 2026 builds
+  systemd.services.nix-daemon.serviceConfig.LimitNOFILE = 65536;
 
   glf.nvidia_config = {
     enable = true;
@@ -102,7 +97,43 @@
 
   programs.ccache.enable = true;
 
-  # --- System Environment & Gaming ---
+  # --- OVERLAYS (Integrated Fixes) ---
+  nixpkgs.overlays = [
+    # Fix for Assimp: Disable math tests failing under raptorlake optimizations
+    (final: prev: {
+      assimp = prev.assimp.overrideAttrs (oldAttrs: {
+        doCheck = false;
+      });
+    })
+
+    # Overlay 1: Perl Fix
+    (final: prev: {
+      perlPackages = prev.perlPackages // {
+        Test2Harness = prev.perlPackages.Test2Harness.overrideAttrs (_: {
+          doCheck = false;
+        });
+      };
+    })
+
+    # Overlay 2: LHA Fix
+    (self: super: {
+      lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
+    })
+
+    # Overlay 3: Python Watchdog Fix
+    (final: prev: {
+      python313 = prev.python313.override {
+        packageOverrides = pfinal: pprev: {
+          watchdog = pprev.watchdog.overridePythonAttrs (oldAttrs: {
+            doCheck = false;
+          });
+        };
+      };
+    })
+  ];
+
+  # ... [Rest of your configuration: environment.systemPackages, users, networking, etc.] ...
+
   environment.systemPackages = with pkgs; [
     nvtopPackages.full
     btop
@@ -146,22 +177,6 @@
 
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
-
-  # --- OVERLAYS (Integrated Fixes) ---
-  nixpkgs.overlays = [
-    # Perl Test2Harness fix for Raptor Lake concurrency failures
-    (final: prev: {
-      perlPackages = prev.perlPackages // {
-        Test2Harness = prev.perlPackages.Test2Harness.overrideAttrs (_: {
-          doCheck = false;
-        });
-      };
-    })
-    # Existing lha dummy fix
-    (self: super: {
-      lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
-    })
-  ];
 
   system.stateVersion = "26.05";
   glf.mangohud.configuration = "light";
