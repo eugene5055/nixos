@@ -1,0 +1,6 @@
+{ config, pkgs, ... }: {
+  home.username = "radean";
+  home.homeDirectory = "/home/radean";
+  home.stateVersion = "26.05";  # Matches your system version
+  programs.home-manager.enable = true;
+}
