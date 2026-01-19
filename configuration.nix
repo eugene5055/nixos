@@ -6,15 +6,15 @@
     ./customConfig
   ];
 
-  # --- Nix Package Manager Settings (Binary Optimized) ---
+  # --- Nix Package Manager Settings ---
   nix = {
     settings = {
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
       experimental-features = [ "nix-command" "flakes" ];
 
-      # Use standard features to ensure binary cache hits
-      system-features = [ "benchmark" "big-parallel" "kvm" "nixos-test" ];
+      # System features including x86_64-v3
+      system-features = [ "gccarch-x86-64-v3" "benchmark" "big-parallel" "kvm" "nixos-test" ];
 
       auto-optimise-store = true;
       download-buffer-size = 524288000;
@@ -26,8 +26,12 @@
     };
   };
 
+  # --- Disable All Swap (File and Zram) ---
+  swapDevices = [ ];
+  zramSwap.enable = lib.mkForce false;
 
-  # --- Hardware & GPU Configuration ---
+  # --- Raptor Lake Hardware Support ---
+  hardware.cpu.intel.updateMicrocode = true;
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -47,7 +51,11 @@
 
   # --- Kernel & Boot ---
   boot = {
+    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
+
     kernelParams = [
+      "intel_pstate=enable"
+      "processor.max_cstate=1"
       "usbcore.autosuspend=-1"
       "nosplit_lock_mitigate"
       "split_lock_detect=off"
@@ -56,13 +64,11 @@
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
       "nvidia.NVreg_OpenRmEnableUnsupportedGpus=1"
       "mitigations=off"
-      "nowatchdog"
+      "nowwatchdog"
       "quiet"
       "splash"
       "loglevel=3"
     ];
-
-    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -76,8 +82,26 @@
     };
   };
 
-  # Standard platform setting for binary compatibility
-  nixpkgs.hostPlatform = "x86_64-linux";
+  # --- Platform Targeting x86_64-v3 ---
+  # This targets the v3 architecture level which Raptor Lake supports.
+  # Most Nix caches provide v3 binaries in 2026, so this won't force a full source rebuild.
+  nixpkgs.hostPlatform = lib.mkDefault {
+    system = "x86_64-linux";
+    gcc.arch = "x86-64-v3";
+    gcc.tune = "x86-64-v3";
+  };
+
+  # --- Overlays & Fixes ---
+  nixpkgs.overlays = [
+    (final: prev: {
+      lha = prev.runCommand "lha-dummy" {} ''
+        mkdir -p $out/bin
+        touch $out/bin/lha
+        chmod +x $out/bin/lha
+      '';
+      lha-unfree = final.lha;
+    })
+  ];
 
   # --- System Environment & Gaming ---
   environment.systemPackages = with pkgs; [
@@ -123,20 +147,6 @@
 
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
-
-    nixpkgs.overlays = [
-    # Force LHA to be a dummy package so it stops failing the build
-    (final: prev: {
-      lha = prev.runCommand "lha-dummy" {} ''
-        mkdir -p $out/bin
-        touch $out/bin/lha
-        chmod +x $out/bin/lha
-      '';
-
-      # Also ensure it doesn't try to build the original as a dependency
-      lha-unfree = final.lha;
-    })
-  ];
 
   system.stateVersion = "26.05";
   glf.mangohud.configuration = "light";
