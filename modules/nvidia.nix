@@ -9,11 +9,13 @@
       libvdpau-va-gl
       nvidia-vaapi-driver
       libva-vdpau-driver
+      vulkan-loader
     ];
     extraPackages32 = with pkgs.pkgsi686Linux; [
       libva
       libvdpau
       libvdpau-va-gl
+      vulkan-loader
     ];
   };
 
