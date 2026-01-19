@@ -8,8 +8,10 @@
     lutris
     bottles
     protonup-qt
+    gamescope
     mangohud
     goverlay
+    vkbasalt
     vulkan-tools
     winetricks
     wineWowPackages.staging

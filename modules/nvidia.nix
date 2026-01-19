@@ -10,6 +10,11 @@
       nvidia-vaapi-driver
       libva-vdpau-driver
     ];
+    extraPackages32 = with pkgs.pkgsi686Linux; [
+      libva
+      libvdpau
+      libvdpau-va-gl
+    ];
   };
 
   hardware.nvidia = {
