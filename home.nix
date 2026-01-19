@@ -199,6 +199,7 @@
   home.packages = with pkgs; [
     # Performance monitoring
     corectrl
+    lact
 
     # Gaming utilities
     heroic  # Epic/GOG launcher
@@ -211,20 +212,4 @@
     Indexing-Enabled=false
   '';
 
-  # KWin performance settings
-  home.file.".config/kwinrc".text = ''
-    [Compositing]
-    AnimationSpeed=2
-    GLCore=true
-    GLPreferBufferSwap=a
-    GLTextureFilter=1
-    HiddenPreviews=5
-    MaxFPS=144
-    RefreshRate=0
-    VSync=false
-    WindowsBlockCompositing=true
-
-    [Effect-PresentWindows]
-    BorderActivate=9
-  '';
 }
