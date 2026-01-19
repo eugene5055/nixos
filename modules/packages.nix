@@ -11,6 +11,10 @@
     mangohud
     goverlay
     vulkan-tools
+    winetricks
+    wineWowPackages.staging
+    dxvk
+    vkd3d
 
     # System & Monitoring
     nvtopPackages.full
