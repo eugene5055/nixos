@@ -17,7 +17,8 @@
     __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
 
     # Vulkan optimizations
-    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json";
+    # Include both 64-bit and 32-bit ICDs so Proton/DXVK can initialize Vulkan.
+    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/nvidia_icd.i686.json";
 
     # Wine/Proton optimizations
     WINEFSYNC = "1";
