@@ -1,14 +1,14 @@
 { config, pkgs, lib, ... }: {
   # --- Performance & Core Services ---
   powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "performance";
+    enable = lib.mkDefault true;
+    cpuFreqGovernor = lib.mkDefault "performance";
   };
 
-  services.thermald.enable = false;
-  services.irqbalance.enable = true;
-  services.system76-scheduler.enable = true;
-  services.lact.enable = false;
+  services.thermald.enable = lib.mkDefault false;
+  services.irqbalance.enable = lib.mkDefault true;
+  services.system76-scheduler.enable = lib.mkDefault true;
+  services.lact.enable = lib.mkDefault false;
 
-  zramSwap.enable = true;
+  zramSwap.enable = lib.mkDefault true;
 }
