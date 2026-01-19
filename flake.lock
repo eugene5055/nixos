@@ -60,11 +60,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1768338665,
-        "narHash": "sha256-nwvk4s3gRsD3WVCT+t9wrSFxrZaAMc209ZhfBYdWHJY=",
+        "lastModified": 1768747925,
+        "narHash": "sha256-InqsGgVwauD6wzjeedtKk4DKmjTt0826IRn0MLfZezI=",
         "ref": "testing",
-        "rev": "926d29ae896ebd535104c38e2b549661b0f7d10f",
-        "revCount": 379,
+        "rev": "341ab33d00504fc60800842414d76fed3e33c3f5",
+        "revCount": 385,
         "type": "git",
         "url": "https://framagit.org/gaming-linux-fr/glf-os/glf-os.git"
       },
@@ -80,11 +80,11 @@
         "nixpkgs-unstable": "nixpkgs-unstable_2"
       },
       "locked": {
-        "lastModified": 1764189562,
-        "narHash": "sha256-RbXSj8ADqJFooPXtybB6ZYxPsViiOpYmjRxvsEsv6Kg=",
+        "lastModified": 1768756329,
+        "narHash": "sha256-RshPVhg3g/S5pnpOsynsgS77VDzvhIkqNIMDlkPgeUQ=",
         "ref": "main",
-        "rev": "b45641be64e6bd1cdf5d9c9d000edccb88171eb1",
-        "revCount": 5,
+        "rev": "a03cb91fc656c962440da8d93de00a3f4f67b3eb",
+        "revCount": 6,
         "type": "git",
         "url": "https://framagit.org/gaming-linux-fr/glf-os/channels-glfos/testing-channels.git"
       },
@@ -168,16 +168,16 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1768621446,
-        "narHash": "sha256-6YwHV1cjv6arXdF/PQc365h1j+Qje3Pydk501Rm4Q+4=",
+        "lastModified": 1768564909,
+        "narHash": "sha256-Kell/SpJYVkHWMvnhqJz/8DqQg2b6PguxVWOuadbHCc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "72ac591e737060deab2b86d6952babd1f896d7c5",
+        "rev": "e4bae1bd10c9c57b2cf517953ab70060a828ee6f",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-25.11",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }

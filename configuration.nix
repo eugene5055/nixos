@@ -6,18 +6,15 @@
     ./customConfig
   ];
 
-  # --- Nix Package Manager & Optimization Settings ---
+  # --- Nix Package Manager Settings (Binary Optimized) ---
   nix = {
     settings = {
       substituters = [ "https://nix-community.cachix.org" ];
       trusted-public-keys = [ "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs=" ];
       experimental-features = [ "nix-command" "flakes" ];
 
-      system-features = [ "gccarch-raptorlake" "benchmark" "big-parallel" "kvm" "nixos-test" ];
-
-      # Parallelism for 2026 Raptor Lake
-      max-jobs = 2;
-      cores = 0;
+      # Use standard features to ensure binary cache hits
+      system-features = [ "benchmark" "big-parallel" "kvm" "nixos-test" ];
 
       auto-optimise-store = true;
       download-buffer-size = 524288000;
@@ -29,11 +26,9 @@
     };
   };
 
-  # --- SWAP CONFIGURATION (2026 Stability) ---
-  swapDevices = [ {
-    device = "/var/lib/swapfile";
-    size = 100 * 1024; # 100GB
-  } ];
+  # --- Disable All Swap (File and Zram) ---
+  swapDevices = [ ];
+  zramSwap.enable = false;
 
   # --- Hardware & GPU Configuration ---
   hardware.graphics = {
@@ -41,9 +36,6 @@
     enable32Bit = true;
     extraPackages = with pkgs; [ libvdpau-va-gl ];
   };
-
-  # Fix for "Too many open files" in 2026 builds
-  systemd.services.nix-daemon.serviceConfig.LimitNOFILE = 65536;
 
   glf.nvidia_config = {
     enable = true;
@@ -58,7 +50,7 @@
 
   # --- Kernel & Boot ---
   boot = {
-    kernelParams = pkgs.lib.mkForce [
+    kernelParams = [
       "usbcore.autosuspend=-1"
       "nosplit_lock_mitigate"
       "split_lock_detect=off"
@@ -71,10 +63,9 @@
       "quiet"
       "splash"
       "loglevel=3"
-      "lsm=landlock,yama,bpf"
     ];
 
-    kernelPackages = pkgs.lib.mkForce pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -88,53 +79,8 @@
     };
   };
 
-  # --- Global Raptor Lake Optimization ---
-  nixpkgs.hostPlatform = {
-    system = "x86_64-linux";
-    gcc.arch = "raptorlake";
-    gcc.tune = "raptorlake";
-  };
-
-  programs.ccache.enable = true;
-
-  # --- OVERLAYS (Integrated Fixes) ---
-  nixpkgs.overlays = [
-    # Fix for Python: Disable tests for 'sh' and 'watchdog' globally
-    # This prevents timing-related TimeoutExceptions on high-end CPUs
-    (final: prev: {
-      pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-        (pfinal: pprev: {
-          sh = pprev.sh.overridePythonAttrs (oldAttrs: {
-            doCheck = false;
-          });
-          watchdog = pprev.watchdog.overridePythonAttrs (oldAttrs: {
-            doCheck = false;
-          });
-        })
-      ];
-    })
-
-    # Fix for Assimp: Disable math tests failing under raptorlake optimizations
-    (final: prev: {
-      assimp = prev.assimp.overrideAttrs (oldAttrs: {
-        doCheck = false;
-      });
-    })
-
-    # Overlay 1: Perl Fix
-    (final: prev: {
-      perlPackages = prev.perlPackages // {
-        Test2Harness = prev.perlPackages.Test2Harness.overrideAttrs (_: {
-          doCheck = false;
-        });
-      };
-    })
-
-    # Overlay 2: LHA Fix
-    (self: super: {
-      lha = super.runCommand "lha-dummy" {} "mkdir -p $out/bin; touch $out/bin/lha; chmod +x $out/bin/lha";
-    })
-  ];
+  # Standard platform setting for binary compatibility
+  nixpkgs.hostPlatform = "x86_64-linux";
 
   # --- System Environment & Gaming ---
   environment.systemPackages = with pkgs; [
