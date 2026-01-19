@@ -62,7 +62,7 @@
       "loglevel=3"
     ];
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
     loader = {
       efi.canTouchEfiVariables = true;
@@ -123,6 +123,20 @@
 
   time.timeZone = "America/New_York";
   i18n.defaultLocale = "en_US.UTF-8";
+
+    nixpkgs.overlays = [
+    # Force LHA to be a dummy package so it stops failing the build
+    (final: prev: {
+      lha = prev.runCommand "lha-dummy" {} ''
+        mkdir -p $out/bin
+        touch $out/bin/lha
+        chmod +x $out/bin/lha
+      '';
+
+      # Also ensure it doesn't try to build the original as a dependency
+      lha-unfree = final.lha;
+    })
+  ];
 
   system.stateVersion = "26.05";
   glf.mangohud.configuration = "light";
