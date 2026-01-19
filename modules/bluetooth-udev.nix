@@ -23,6 +23,10 @@
       # SATA/SAS drives - use mq-deadline
       ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/scheduler}="mq-deadline"
 
+      # Moza Racing wheel bases and peripherals (Boxflat access)
+      SUBSYSTEM=="usb", ATTR{idVendor}=="346e", TAG+="uaccess", MODE="0660"
+      SUBSYSTEM=="hidraw", ATTRS{idVendor}=="346e", TAG+="uaccess", MODE="0660"
+
       # Set USB device power management for gaming peripherals
       ACTION=="add", SUBSYSTEM=="usb", ATTR{power/control}="on"
     '';
