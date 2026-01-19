@@ -1,4 +1,4 @@
-modules/systemd.nix{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }: {
   # Systemd optimizations
   systemd = {
     services = {
