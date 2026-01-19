@@ -26,9 +26,6 @@
     };
   };
 
-  # --- Disable All Swap (File and Zram) ---
-  swapDevices = [ ];
-  zramSwap.enable = false;
 
   # --- Hardware & GPU Configuration ---
   hardware.graphics = {
