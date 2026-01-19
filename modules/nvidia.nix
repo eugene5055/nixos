@@ -18,6 +18,7 @@
     powerManagement.finegrained = false;
     open = true;
     nvidiaSettings = true;
+    nvidiaPersistenced = true;
     package = config.boot.kernelPackages.nvidiaPackages.beta;
     forceFullCompositionPipeline = false;
   };
@@ -29,6 +30,7 @@
     __GL_SYNC_TO_VBLANK = "0";
     __GL_SHADER_DISK_CACHE = "1";
     __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
+    __GL_MaxFramesAllowed = "1";
     KWIN_TRIPLE_BUFFER = "1";
     PROTON_ENABLE_NVAPI = "1";
   };

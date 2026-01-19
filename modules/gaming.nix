@@ -15,8 +15,11 @@
     enableRenice = true;
     settings = {
       general = {
-        renice = 10;
-        inhibit_screensaver = 0;
+        renice = -10;
+        ioprio = 0;
+        desiredgov = "performance";
+        softrealtime = "auto";
+        inhibit_screensaver = 1;
       };
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";

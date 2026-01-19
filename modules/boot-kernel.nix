@@ -8,6 +8,8 @@
       # CPU Performance
       "intel_pstate=active"
       "processor.max_cstate=1"
+      "preempt=full"
+      "transparent_hugepage=always"
 
       # USB & Latency
       "usbcore.autosuspend=-1"

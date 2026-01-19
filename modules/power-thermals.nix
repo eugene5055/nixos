@@ -1,11 +1,13 @@
 { config, pkgs, lib, ... }: {
   # --- Performance & Core Services ---
   powerManagement = {
-    enable = false;
-    cpuFreqGovernor = "schedutil";
+    enable = true;
+    cpuFreqGovernor = "performance";
   };
 
-  services.thermald.enable = true;
+  services.thermald.enable = false;
+  services.irqbalance.enable = true;
+  services.system76-scheduler.enable = true;
   services.lact.enable = false;
 
   zramSwap.enable = true;
