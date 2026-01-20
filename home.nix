@@ -7,6 +7,10 @@
 
   # --- Performance Environment Variables ---
   home.sessionVariables = {
+    # Gaming performance
+    MANGOHUD = "1";
+    ENABLE_VKBASALT = "1";
+
     # NVIDIA optimizations
     __GL_SHADER_DISK_CACHE_PATH = "$HOME/.cache/nvidia";
 
@@ -49,7 +53,11 @@
     bashrcExtra = ''
       # Launch any game with performance optimizations
       game() {
+
         ENABLE_VKBASALT=1 gamemoderun mangohud "$@"
+
+        gamemoderun mangohud "$@"
+
       }
     '';
   };
