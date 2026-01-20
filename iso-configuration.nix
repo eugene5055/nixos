@@ -19,7 +19,7 @@
   boot = {
     lanzaboote.enable = lib.mkForce false;
     loader = {
-      systemd-boot.enable = lib.mkForce true;
+      systemd-boot.enable = lib.mkOverride 1000 true;
       efi.canTouchEfiVariables = lib.mkForce false;
     };
   };
