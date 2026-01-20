@@ -117,6 +117,7 @@
 
       modules = [
         "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+        lanzaboote.nixosModules.lanzaboote
         ./iso-configuration.nix
       ];
     };
