@@ -26,7 +26,6 @@
       "mds=off"
 
       # NVIDIA
-      "nvidia-drm.modeset=1"
       "nvidia-drm.fbdev=1"
       "nvidia.NVreg_PreserveVideoMemoryAllocations=1"
 
@@ -76,7 +75,6 @@
       # Scheduler performance
       "kernel.sched_migration_cost_ns" = lib.mkForce 5000000;
       "kernel.sched_autogroup_enabled" = lib.mkForce 0;
-      "kernel.nmi_watchdog" = lib.mkForce 0;
       "kernel.unprivileged_userns_clone" = lib.mkForce 1;
 
       # Gaming-specific
