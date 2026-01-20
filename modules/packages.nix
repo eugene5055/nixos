@@ -13,6 +13,7 @@
     goverlay
     vkbasalt
     vulkan-tools
+    pkgs.pkgsi686Linux.vulkan-tools
     winetricks
     wineWowPackages.staging
     dxvk
