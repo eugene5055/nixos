@@ -22,6 +22,13 @@
       systemd-boot.enable = lib.mkOverride 1000 true;
       efi.canTouchEfiVariables = lib.mkForce false;
     };
+    supportedFilesystems = lib.mkForce [
+      "btrfs"
+      "ext4"
+      "f2fs"
+      "vfat"
+      "xfs"
+    ];
   };
 
   isoImage = {
