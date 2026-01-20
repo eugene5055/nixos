@@ -21,6 +21,7 @@
     loader = {
       systemd-boot.enable = lib.mkOverride 1000 true;
       efi.canTouchEfiVariables = lib.mkForce false;
+      timeout = lib.mkForce 10;
     };
     supportedFilesystems = lib.mkForce [
       "btrfs"
