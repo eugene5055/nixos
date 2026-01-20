@@ -15,15 +15,12 @@
   services.udev = {
     packages = [ pkgs.game-devices-udev-rules ];
 
-    # I/O Scheduler optimizations
+    # Moza/Sim-Racing & Storage Optimizations
     extraRules = ''
-      # NVMe drives - use none scheduler for best performance
+      # NVMe Performance: Use 'none' scheduler for ultra-fast drives
       ACTION=="add|change", KERNEL=="nvme[0-9]*", ATTR{queue/scheduler}="none"
 
-      # SATA/SAS drives - use mq-deadline
-      ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/scheduler}="mq-deadline"
-
-      # Set USB device power management for gaming peripherals
+      # Peripheral Stability: Disable USB power-save for racing gear
       ACTION=="add", SUBSYSTEM=="usb", ATTR{power/control}="on"
     '';
   };
