@@ -106,5 +106,19 @@
         })
       ];
     };
+
+    nixosConfigurations."nixos-iso" = nixpkgs.lib.nixosSystem {
+      inherit system;
+
+      specialArgs = {
+        inherit inputs;
+        inherit system;
+      };
+
+      modules = [
+        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+        ./iso-configuration.nix
+      ];
+    };
   };
 }
