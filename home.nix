@@ -8,9 +8,7 @@
   # --- Performance Environment Variables ---
   home.sessionVariables = {
     # NVIDIA optimizations
-    __GL_SHADER_DISK_CACHE = "1";
     __GL_SHADER_DISK_CACHE_PATH = "$HOME/.cache/nvidia";
-    __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
 
     # Vulkan optimizations
     # Include both 64-bit and 32-bit ICDs so Proton/DXVK can initialize Vulkan.

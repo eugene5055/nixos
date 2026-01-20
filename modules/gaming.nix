@@ -33,8 +33,4 @@
     };
   };
 
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true; # Required for the EA App
-  };
 }
