@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     ./modules/boot-kernel.nix
     ./modules/nix-settings.nix
+    ./modules/system.nix
     ./modules/nvidia.nix
     ./modules/bluetooth-udev.nix
     ./modules/power-thermals.nix

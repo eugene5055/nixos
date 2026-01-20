@@ -183,14 +183,7 @@
   '';
 
   # --- Complete Usage Guide ---
-  home.file."Documents/nixos-performance-guide.md".source = builtins.toFile "nixos-performance-guide.md" ''
-    See the artifact for the complete guide content
-  '';
-  home.file."Documents/nixos-performance-guide.md".text = (builtins.readFile (pkgs.writeText "usage-guide" ''
-# NixOS Performance System - Usage Guide
-
-[Full content from artifact - see above]
-  ''));
+  home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
 
   # --- Additional Tools ---
   home.packages = with pkgs; [
