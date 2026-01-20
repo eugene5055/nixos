@@ -22,6 +22,12 @@
 
       # Peripheral Stability: Disable USB power-save for racing gear
       ACTION=="add", SUBSYSTEM=="usb", ATTR{power/control}="on"
+
+      # Boxflat devices
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="1eaf", MODE="0666", TAG+="uaccess"
+      SUBSYSTEMS=="usb", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="1eaf", MODE="0666", TAG+="uaccess"
+      KERNEL=="hidraw*", ATTRS{idVendor}=="346e", MODE="0666", TAG+="uaccess"
     '';
   };
 
