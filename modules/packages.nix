@@ -13,6 +13,10 @@
     goverlay
     vkbasalt
     vulkan-tools
+    pkgs.pkgsi686Linux.vulkan-tools
+    (pkgs.writeShellScriptBin "vulkaninfo32" ''
+      exec ${pkgs.pkgsi686Linux.vulkan-tools}/bin/vulkaninfo "$@"
+    '')
     winetricks
     wineWowPackages.staging
     dxvk
