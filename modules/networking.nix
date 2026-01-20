@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }: {
   # --- Networking & Localization ---
   networking = {
-    hostName = "nixos";
+    hostName = lib.mkDefault "nixos";
     networkmanager = {
       enable = true;
       wifi.powersave = false;

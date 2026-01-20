@@ -38,5 +38,5 @@
     makeUsbBootable = true;
   };
 
-  networking.hostName = lib.mkDefault "nixos-live";
+  networking.hostName = "nixos-live";
 }
