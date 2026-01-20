@@ -116,7 +116,7 @@
       };
 
       modules = [
-        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical.nix"
+        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
         lanzaboote.nixosModules.lanzaboote
         ./iso-configuration.nix
       ];
