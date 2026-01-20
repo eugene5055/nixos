@@ -1,14 +1,10 @@
 { config, pkgs, lib, ... }: {
   # --- Storage Optimizations ---
   # Root filesystem optimization (ext4)
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/fe2e5d9a-1096-493a-9e10-57522c6168df";
-    fsType = "ext4";
-    options = [
-      "noatime"
-      "nodiratime"
-    ];
-  };
+  fileSystems."/".options = [
+    "noatime"
+    "nodiratime"
+  ];
 
   # Secondary drive (btrfs)
   fileSystems."/run/media/radean" = {

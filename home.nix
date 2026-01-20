@@ -49,20 +49,9 @@
 
     # Useful functions
     bashrcExtra = ''
-    # Launch any game with performance optimizations
-    game() {
+      # Launch any game with performance optimizations
+      game() {
         ENABLE_VKBASALT=1 gamemoderun mangohud "$@"
-      }
-
-      # Quick performance report
-      perf-report() {
-        echo "=== Performance Configuration ==="
-        echo "CPU Governor: $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor)"
-        echo "I/O Scheduler (nvme): $(cat /sys/block/nvme0n1/queue/scheduler 2>/dev/null || echo 'N/A')"
-        echo "Huge Pages: $(grep HugePages_Total /proc/meminfo | awk '{print $2}')"
-        echo "GameMode: $(systemctl --user is-active gamemoded 2>/dev/null || echo 'inactive')"
-        echo ""
-        nvidia-smi --query-gpu=name,temperature.gpu,power.draw,clocks.gr --format=csv,noheader 2>/dev/null
       }
     '';
   };
