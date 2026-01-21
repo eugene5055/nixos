@@ -15,7 +15,7 @@
     enableRenice = true;
     settings = {
       general = {
-        renice = 0;
+        renice = -10;
         ioprio = "off";
         desiredgov = "performance";
         softrealtime = "auto";
@@ -35,4 +35,20 @@
     };
   };
 
+  # Steam hardware udev rules (controllers/VR for lowest latency)
+  hardware.steam-hardware.enable = true;
+
+  # Gaming performance environment variables
+  environment.variables = {
+    WINEESYNC = "1";
+    WINEFSYNC = "1";
+    WINE_NTSYNC = "1";
+    PROTON_USE_FSYNC = "1";
+    PROTON_USE_NTSYNC = "1";
+    PROTON_NO_ESYNC = "0";
+    PROTON_NO_FSYNC = "0";
+    vblank_mode = "0";
+    __GL_GSYNC_ALLOWED = "1";
+    __GL_VRR_ALLOWED = "1";
+  };
 }
