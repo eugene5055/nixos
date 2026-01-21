@@ -16,7 +16,7 @@
     settings = {
       general = {
         renice = 0;
-        ioprio = 4;
+        ioprio = "off";
         desiredgov = "performance";
         softrealtime = "auto";
         inhibit_screensaver = 1;
@@ -24,6 +24,8 @@
       gpu = {
         apply_gpu_optimisations = "accept-responsibility";
         gpu_device = 1;
+        nv_core_clock_mhz_offset = -1;
+        nv_mem_clock_mhz_offset = -1;
         nv_powermizer_mode = 1; # Prefer maximum performance
       };
       custom = {
