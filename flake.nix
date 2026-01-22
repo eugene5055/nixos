@@ -15,45 +15,53 @@
     };
   };
 
-  outputs = { self, nixpkgs, lanzaboote, home-manager, ... }@inputs:
-  let
-    system = "x86_64-linux";
-  in {
-    nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
-      inherit system;
-
-      specialArgs = {
-        inherit inputs;
+  outputs =
+    {
+      self,
+      nixpkgs,
+      lanzaboote,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
         inherit system;
+
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+        };
+
+        modules = [
+          ./configuration.nix
+          lanzaboote.nixosModules.lanzaboote
+
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.radean = import ./home.nix;
+            home-manager.backupFileExtension = "backup";
+          }
+        ];
       };
 
-      modules = [
-        ./configuration.nix
-        lanzaboote.nixosModules.lanzaboote
-
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.radean = import ./home.nix;
-          home-manager.backupFileExtension = "backup";
-        }
-      ];
-    };
-
-    nixosConfigurations."nixos-iso" = nixpkgs.lib.nixosSystem {
-      inherit system;
-
-      specialArgs = {
-        inherit inputs;
+      nixosConfigurations."nixos-iso" = nixpkgs.lib.nixosSystem {
         inherit system;
-      };
 
-      modules = [
-        "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
-        lanzaboote.nixosModules.lanzaboote
-        ./iso-configuration.nix
-      ];
+        specialArgs = {
+          inherit inputs;
+          inherit system;
+        };
+
+        modules = [
+          "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
+          lanzaboote.nixosModules.lanzaboote
+          ./iso-configuration.nix
+        ];
+      };
     };
-  };
 }

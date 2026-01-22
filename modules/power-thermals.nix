@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Performance & Core Services ---
   powerManagement = {
     enable = lib.mkDefault true;

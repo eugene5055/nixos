@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Networking & Localization ---
   networking = {
     hostName = lib.mkDefault "nixos";
@@ -6,7 +12,10 @@
       enable = true;
       wifi.powersave = false;
     };
-    nameservers = [ "1.1.1.1" "8.8.8.8" ];
+    nameservers = [
+      "1.1.1.1"
+      "8.8.8.8"
+    ];
   };
 
   time.timeZone = "America/New_York";

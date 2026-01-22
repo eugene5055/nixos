@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- NVIDIA Graphics (Maximum Performance) ---
   services.xserver.videoDrivers = [ "nvidia" ];
   services.xserver.deviceSection = ''

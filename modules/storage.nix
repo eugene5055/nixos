@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Storage Optimizations ---
   # Root filesystem optimization (ext4)
   fileSystems."/".options = [

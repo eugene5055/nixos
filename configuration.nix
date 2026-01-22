@@ -1,4 +1,11 @@
-{ inputs, config, pkgs, lib, ... }: {
+{
+  inputs,
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   imports = [
     ./hardware-configuration.nix
     ./modules/boot-kernel.nix
@@ -16,5 +23,5 @@
     ./modules/gaming.nix
     ./modules/storage.nix
     ./modules/state.nix
-];
+  ];
 }

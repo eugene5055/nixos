@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Display Manager & Desktop ---
   services.displayManager.sddm = {
     enable = true;

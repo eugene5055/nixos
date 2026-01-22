@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Boot & Kernel (Maximum Performance) ---
   boot = {
     kernelPackages = lib.mkForce pkgs.linuxPackages_zen;

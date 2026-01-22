@@ -1,4 +1,10 @@
-{ config, pkgs, lib, ... }: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+{
   # --- Audio (Low-Latency Pipewire) ---
   security.rtkit.enable = true;
 
@@ -18,7 +24,10 @@
               "nice.level" = -11;
               "rt.prio" = 88;
             };
-            flags = [ "ifexists" "nofail" ];
+            flags = [
+              "ifexists"
+              "nofail"
+            ];
           }
         ];
       };

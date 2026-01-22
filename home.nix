@@ -1,4 +1,5 @@
-{ config, pkgs, ... }: {
+{ config, pkgs, ... }:
+{
   home.username = "radean";
   home.homeDirectory = "/home/radean";
   home.stateVersion = "26.05";
@@ -46,7 +47,8 @@
       "lutris-perf" = "gamemoderun lutris";
 
       # System info
-      "sys-info" = "echo 'CPU Governor:' && check-governor && echo 'I/O Scheduler:' && io-scheduler && echo 'GPU:' && nvidia-smi --query-gpu=name,temperature.gpu,utilization.gpu --format=csv,noheader";
+      "sys-info" =
+        "echo 'CPU Governor:' && check-governor && echo 'I/O Scheduler:' && io-scheduler && echo 'GPU:' && nvidia-smi --query-gpu=name,temperature.gpu,utilization.gpu --format=csv,noheader";
     };
 
     # Useful functions
@@ -187,7 +189,7 @@
     lact
 
     # Gaming utilities
-    heroic  # Epic/GOG launcher
+    heroic # Epic/GOG launcher
   ];
 
   # --- KDE Plasma Optimizations ---
