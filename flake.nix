@@ -55,6 +55,7 @@
             home-manager.extraSpecialArgs = { inherit inputs; };
             home-manager.users.radean = {
               imports = [
+                niri.homeManagerModules.niri
                 ./home.nix
               ];
             };
