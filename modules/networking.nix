@@ -7,7 +7,6 @@
 {
   # --- Networking & Localization ---
   networking = {
-    hostName = lib.mkDefault "nixos";
     networkmanager = {
       enable = true;
       wifi.powersave = false;
