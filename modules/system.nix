@@ -7,7 +7,6 @@
 {
   services.fwupd.enable = true;
 
-  nixpkgs.hostPlatform = lib.systems.examples.x86_64-linux;
 
   documentation = {
     enable = true;
