@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
@@ -19,6 +20,7 @@
     {
       self,
       nixpkgs,
+      nix-cachyos-kernel,
       lanzaboote,
       home-manager,
       ...
