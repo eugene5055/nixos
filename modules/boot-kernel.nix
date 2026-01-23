@@ -8,7 +8,7 @@
 {
   # --- Boot & Kernel (Maximum Performance) ---
   boot = {
-    kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-rc;
+    kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-latest-x86_64-v3;
 
     # Aggressive performance kernel parameters
     kernelParams = [
