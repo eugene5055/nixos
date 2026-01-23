@@ -27,17 +27,21 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      mkSystem = modules:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          specialArgs = {
+            inherit inputs;
+            inherit system;
+          };
+
+          inherit modules;
+        };
     in
     {
-      nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = {
-          inherit inputs;
-          inherit system;
-        };
-
-        modules = [
+      nixosConfigurations = {
+        nixos = mkSystem [
           ./configuration.nix
           lanzaboote.nixosModules.lanzaboote
 
@@ -49,17 +53,8 @@
             home-manager.backupFileExtension = "backup";
           }
         ];
-      };
 
-      nixosConfigurations."nixos-iso" = nixpkgs.lib.nixosSystem {
-        inherit system;
-
-        specialArgs = {
-          inherit inputs;
-          inherit system;
-        };
-
-        modules = [
+        nixos-iso = mkSystem [
           "${nixpkgs}/nixos/modules/installer/cd-dvd/installation-cd-graphical-calamares.nix"
           lanzaboote.nixosModules.lanzaboote
           ./iso-configuration.nix

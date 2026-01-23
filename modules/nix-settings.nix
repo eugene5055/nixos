@@ -19,9 +19,14 @@
     fallback = true;
     keep-outputs = true;
     keep-derivations = true;
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
     min-free = 5368709120;
     max-free = 10737418240;
     eval-cache = true;
+    use-xdg-base-directories = true;
     system-features = [
       "nixos-test"
       "benchmark"
