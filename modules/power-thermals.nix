@@ -25,7 +25,7 @@
     after = [ "sysinit.target" ];
     serviceConfig = {
       Type = "simple";
-      ExecStart = "${pkgs.scx}/bin/scx_lavd";
+      ExecStart = "${pkgs.scx.full}/bin/scx_lavd";
       Restart = "on-failure";
       RestartSec = "2s";
     };
