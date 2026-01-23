@@ -1,0 +1,22 @@
+{
+  ...
+}:
+{
+  imports = [
+    ./boot-kernel.nix
+    ./nix-settings.nix
+    ./system.nix
+    ./nvidia.nix
+    ./bluetooth-udev.nix
+    ./power-thermals.nix
+    ./systemd.nix
+    ./desktop.nix
+    ./audio.nix
+    ./networking.nix
+    ./users.nix
+    ./packages.nix
+    ./gaming.nix
+    ./storage.nix
+    ./state.nix
+  ];
+}
