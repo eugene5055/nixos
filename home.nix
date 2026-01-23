@@ -142,6 +142,52 @@
     executable = true;
   };
 
+  home.file.".local/bin/game-mode-toggle" = {
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      state_dir="${XDG_STATE_HOME:-$HOME/.local/state}"
+      state_file="$state_dir/gamemode.enabled"
+      gamescope_unit="gamescope-session"
+      steam_cmd=(steam -gamepadui)
+
+      mkdir -p "$state_dir"
+
+      enable_compositor() {
+        qdbus org.kde.KWin /Compositor org.kde.kwin.Compositing.setActive true >/dev/null 2>&1 || true
+      }
+
+      disable_compositor() {
+        qdbus org.kde.KWin /Compositor org.kde.kwin.Compositing.setActive false >/dev/null 2>&1 || true
+      }
+
+      if [[ -f "$state_file" ]]; then
+        rm -f "$state_file"
+        "${config.home.homeDirectory}/.local/bin/normal-mode"
+        enable_compositor
+        systemctl --user stop "$gamescope_unit" >/dev/null 2>&1 || true
+        systemctl --user stop gamemoded.service >/dev/null 2>&1 || true
+      else
+        touch "$state_file"
+        "${config.home.homeDirectory}/.local/bin/performance-mode"
+        disable_compositor
+        systemctl --user start gamemoded.service >/dev/null 2>&1 || true
+        if command -v gamescope-session >/dev/null 2>&1; then
+          if command -v steam >/dev/null 2>&1; then
+            systemd-run --user --unit="$gamescope_unit" --collect gamescope-session -- "${steam_cmd[@]}" >/dev/null 2>&1 || true
+          else
+            systemd-run --user --unit="$gamescope_unit" --collect gamescope-session >/dev/null 2>&1 || true
+            notify-send "🎮 Game Mode" "Steam not found; launched Gamescope without Steam UI"
+          fi
+        else
+          notify-send "🎮 Game Mode" "gamescope-session not found; install gamescope-session to use Game Mode UI"
+        fi
+      fi
+    '';
+    executable = true;
+  };
+
   home.file.".local/bin/perf-report" = {
     text = ''
       #!/usr/bin/env bash
@@ -181,6 +227,35 @@
 
   # --- Complete Usage Guide ---
   home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
+
+  # --- Game Mode Desktop Shortcut ---
+  home.file.".local/share/applications/game-mode.desktop" = {
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Game Mode
+      Comment=Toggle gaming performance mode with Steam Deck UI
+      Exec=${config.home.homeDirectory}/.local/bin/game-mode-toggle
+      Icon=applications-games
+      Terminal=false
+      Categories=Game;System;
+    '';
+    executable = true;
+  };
+
+  home.file."Desktop/Game Mode.desktop" = {
+    text = ''
+      [Desktop Entry]
+      Type=Application
+      Name=Game Mode
+      Comment=Toggle gaming performance mode with Steam Deck UI
+      Exec=${config.home.homeDirectory}/.local/bin/game-mode-toggle
+      Icon=applications-games
+      Terminal=false
+      Categories=Game;System;
+    '';
+    executable = true;
+  };
 
   # --- Additional Tools ---
   home.packages = with pkgs; [
