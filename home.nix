@@ -1,14 +1,9 @@
 {
   config,
   pkgs,
-  inputs,
   ...
 }:
 {
-  imports = [
-    inputs.niri.homeModules.niri
-  ];
-
   home.username = "radean";
   home.homeDirectory = "/home/radean";
   home.stateVersion = "26.05";
@@ -124,7 +119,7 @@
       echo "  ✓ GPU: Maximum performance mode"
       echo "  ✓ I/O Scheduler: Optimized"
       echo ""
-      echo "Compositor: niri (Wayland)"
+      echo "Compositor: KDE Plasma (Wayland)"
       echo ""
       echo "Launch games with: gamemoderun mangohud your-game"
       echo ""
@@ -142,7 +137,7 @@
       echo "🖥️  NORMAL MODE"
       echo ""
       echo "System in normal desktop mode"
-      echo "Compositor: niri (Wayland)"
+      echo "Compositor: KDE Plasma (Wayland)"
       echo ""
 
       notify-send "🖥️ Normal Mode" "Desktop mode active"
@@ -155,7 +150,7 @@
       #!/usr/bin/env bash
       echo "=== Performance Configuration ==="
       echo "CPU Governor: $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null)"
-      echo "Compositor: niri (Wayland)"
+      echo "Compositor: KDE Plasma (Wayland)"
       echo "I/O Scheduler (nvme2): $(cat /sys/block/nvme2n1/queue/scheduler 2>/dev/null | grep -o '\[.*\]' | tr -d '[]' || echo 'N/A')"
       echo "Huge Pages: $(grep HugePages_Total /proc/meminfo | awk '{print $2}')"
       echo "GameMode: $(systemctl --user is-active gamemoded 2>/dev/null || echo 'inactive')"
@@ -179,7 +174,7 @@
     gamemoderun PROTON_USE_WINED3D=1 %command%
 
     Compositor:
-    niri (Wayland)
+    KDE Plasma (Wayland)
 
     === How to Apply ===
     1. Right-click game in Steam
@@ -190,69 +185,6 @@
   # --- Complete Usage Guide ---
   home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
 
-  # --- Niri Desktop Configuration ---
-  programs.niri = {
-    enable = true;
-    settings = {
-      input = {
-        keyboard.numlock = true;
-        touchpad = {
-          tap = true;
-          natural-scroll = true;
-        };
-      };
-
-      layout.gaps = 12;
-
-      spawn-at-startup = [
-        { argv = [ "waybar" ]; }
-        { argv = [ "mako" ]; }
-        { argv = [ "nm-applet" ]; }
-        { argv = [ "blueman-applet" ]; }
-        { argv = [ "polkit-gnome-authentication-agent-1" ]; }
-        { argv = [ "swaybg" "-m" "fill" "-c" "#1d1f21" ]; }
-        { sh = "wl-paste --type text --watch cliphist store"; }
-        { sh = "wl-paste --type image --watch cliphist store"; }
-        { sh = "swayidle -w timeout 300 'swaylock -f' timeout 600 'swaylock -f' before-sleep 'swaylock -f'"; }
-      ];
-
-      screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
-
-      binds = {
-        "Mod+Return".action.spawn = "foot";
-        "Mod+D".action.spawn = [ "wofi" "--show" "drun" ];
-        "Super+Alt+L".action.spawn = "swaylock";
-
-        "Print".action.screenshot = [ ];
-        "Ctrl+Print".action.screenshot-screen = [ ];
-        "Alt+Print".action.screenshot-window = [ ];
-
-        "XF86AudioRaiseVolume".allow-when-locked = true;
-        "XF86AudioRaiseVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+" "-l" "1.0" ];
-        "XF86AudioLowerVolume".allow-when-locked = true;
-        "XF86AudioLowerVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-" ];
-        "XF86AudioMute".allow-when-locked = true;
-        "XF86AudioMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
-        "XF86AudioMicMute".allow-when-locked = true;
-        "XF86AudioMicMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle" ];
-
-        "XF86AudioPlay".allow-when-locked = true;
-        "XF86AudioPlay".action.spawn = [ "playerctl" "play-pause" ];
-        "XF86AudioStop".allow-when-locked = true;
-        "XF86AudioStop".action.spawn = [ "playerctl" "stop" ];
-        "XF86AudioPrev".allow-when-locked = true;
-        "XF86AudioPrev".action.spawn = [ "playerctl" "previous" ];
-        "XF86AudioNext".allow-when-locked = true;
-        "XF86AudioNext".action.spawn = [ "playerctl" "next" ];
-
-        "XF86MonBrightnessUp".allow-when-locked = true;
-        "XF86MonBrightnessUp".action.spawn = [ "brightnessctl" "--class=backlight" "set" "+10%" ];
-        "XF86MonBrightnessDown".allow-when-locked = true;
-        "XF86MonBrightnessDown".action.spawn = [ "brightnessctl" "--class=backlight" "set" "10%-" ];
-      };
-    };
-  };
-
   # --- Additional Tools ---
   home.packages = with pkgs; [
     # Performance monitoring
@@ -262,18 +194,6 @@
     # Gaming utilities
     heroic # Epic/GOG launcher
 
-    # Wayland desktop essentials
-    waybar
-    wofi
-    foot
-    mako
-    swaybg
-    swayidle
-    swaylock
-    wl-clipboard
-    cliphist
-    grim
-    slurp
     playerctl
     brightnessctl
     networkmanagerapplet

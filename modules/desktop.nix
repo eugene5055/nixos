@@ -10,7 +10,8 @@
     enable = true;
     wayland.enable = true;
   };
-  services.displayManager.defaultSession = "niri";
+  services.displayManager.defaultSession = "plasma";
+  services.desktopManager.plasma6.enable = true;
 
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
@@ -19,8 +20,7 @@
 
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [ pkgs.xdg-desktop-portal-kde ];
   };
 
   services.flatpak.enable = true;
