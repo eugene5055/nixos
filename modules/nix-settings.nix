@@ -60,4 +60,18 @@
   hardware.cpu.intel.updateMicrocode = true;
 
   nixpkgs.config.allowUnfree = true;
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      gamescope = prev.gamescope.overrideAttrs (old: rec {
+        version = "3.14.29";
+        src = prev.fetchFromGitHub {
+          owner = "ValveSoftware";
+          repo = "gamescope";
+          rev = "3.14.29";
+          hash = "sha256-5NUKtEGXYNL1IgOgYYSzE2a2cqHTTXLz5R2f8831ZQc=";
+        };
+      });
+    })
+  ];
 }
