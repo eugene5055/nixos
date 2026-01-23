@@ -1,8 +1,7 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 {
-  imports = [
-    inputs.niri.homeModules.niri
-  ];
+  # Niri's NixOS module auto-imports the Home Manager module,
+  # so avoid a duplicate import here.
 
   home.username = "radean";
   home.homeDirectory = "/home/radean";
