@@ -55,7 +55,6 @@
             home-manager.users.radean = {
               imports = [
                 ./home.nix
-                niri.homeModules.niri
               ];
             };
             home-manager.backupFileExtension = "backup";
