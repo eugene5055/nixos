@@ -38,6 +38,7 @@
     # Performance tools
     linuxPackages.cpupower
     msr-tools
+    scx
 
     # Notifications
     libnotify
