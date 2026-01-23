@@ -11,8 +11,8 @@
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    defaultSession = "niri";
   };
+  services.displayManager.defaultSession = "niri";
 
   services.gnome.gnome-keyring.enable = true;
   services.gvfs.enable = true;
