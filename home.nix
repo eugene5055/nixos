@@ -147,7 +147,7 @@
       #!/usr/bin/env bash
       set -euo pipefail
 
-      state_dir="${XDG_STATE_HOME:-$HOME/.local/state}"
+      state_dir="''${XDG_STATE_HOME:-$HOME/.local/state}"
       state_file="$state_dir/gamemode.enabled"
       gamescope_unit="gamescope-session"
       steam_cmd=(steam -gamepadui)
@@ -175,7 +175,7 @@
         systemctl --user start gamemoded.service >/dev/null 2>&1 || true
         if command -v gamescope-session >/dev/null 2>&1; then
           if command -v steam >/dev/null 2>&1; then
-            systemd-run --user --unit="$gamescope_unit" --collect gamescope-session -- "${steam_cmd[@]}" >/dev/null 2>&1 || true
+            systemd-run --user --unit="$gamescope_unit" --collect gamescope-session -- "''${steam_cmd[@]}" >/dev/null 2>&1 || true
           else
             systemd-run --user --unit="$gamescope_unit" --collect gamescope-session >/dev/null 2>&1 || true
             notify-send "🎮 Game Mode" "Steam not found; launched Gamescope without Steam UI"
