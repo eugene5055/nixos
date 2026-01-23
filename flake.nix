@@ -53,7 +53,7 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.sharedModules = [
-              niri.homeManagerModules.niri
+              niri.homeModules.niri
             ];
             home-manager.users.radean = import ./home.nix;
             home-manager.backupFileExtension = "backup";
