@@ -12,10 +12,8 @@ Use one of the following in Steam launch options:
 
 ## Handy scripts
 
-The following scripts are installed into `~/.local/bin`:
+The following script is installed into `~/.local/bin`:
 
-- `performance-mode`: prints the current performance posture and notifies via libnotify.
-- `normal-mode`: returns to normal desktop messaging.
 - `perf-report`: prints a quick status report of governors, I/O scheduler, huge pages, and GPU stats.
 
 ## MangoHud
