@@ -46,7 +46,6 @@
         modules = [
           ./configuration.nix
           lanzaboote.nixosModules.lanzaboote
-          niri.nixosModules.niri
 
           home-manager.nixosModules.home-manager
           {

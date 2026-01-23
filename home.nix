@@ -1,6 +1,13 @@
-{ config, pkgs, ... }:
 {
-  # Niri's Home Manager module is provided by the Niri NixOS module.
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
+{
+  imports = [
+    inputs.niri.homeModules.niri
+  ];
 
   home.username = "radean";
   home.homeDirectory = "/home/radean";
