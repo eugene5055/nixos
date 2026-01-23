@@ -1,7 +1,6 @@
 { config, pkgs, ... }:
 {
-  # Niri's NixOS module auto-imports the Home Manager module,
-  # so avoid a duplicate import here.
+  # Niri's Home Manager module is imported from flake.nix.
 
   home.username = "radean";
   home.homeDirectory = "/home/radean";
