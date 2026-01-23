@@ -1,5 +1,9 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
+  imports = [
+    inputs.niri.homeModules.niri
+  ];
+
   home.username = "radean";
   home.homeDirectory = "/home/radean";
   home.stateVersion = "26.05";
