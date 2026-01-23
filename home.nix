@@ -182,60 +182,67 @@
   home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
 
   # --- Niri Desktop Configuration ---
-  home.file.".config/niri/config.kdl".text = ''
-    // Minimal niri configuration with common desktop services.
-    // See https://kdl.dev and https://yalter.github.io/niri for full reference.
+  programs.niri = {
+    enable = true;
+    settings = {
+      input = {
+        keyboard.numlock = true;
+        touchpad = {
+          tap = true;
+          natural-scroll = true;
+        };
+      };
 
-    input {
-        keyboard {
-            numlock
-        }
+      layout.gaps = 12;
 
-        touchpad {
-            tap
-            natural-scroll
-        }
-    }
+      spawn-at-startup = [
+        { argv = [ "waybar" ]; }
+        { argv = [ "mako" ]; }
+        { argv = [ "nm-applet" ]; }
+        { argv = [ "blueman-applet" ]; }
+        { argv = [ "polkit-gnome-authentication-agent-1" ]; }
+        { argv = [ "swaybg" "-m" "fill" "-c" "#1d1f21" ]; }
+        { sh = "wl-paste --type text --watch cliphist store"; }
+        { sh = "wl-paste --type image --watch cliphist store"; }
+        { sh = "swayidle -w timeout 300 'swaylock -f' timeout 600 'swaylock -f' before-sleep 'swaylock -f'"; }
+      ];
 
-    layout {
-        gaps 12
-    }
+      screenshot-path = "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png";
 
-    spawn-at-startup "waybar"
-    spawn-at-startup "mako"
-    spawn-at-startup "nm-applet"
-    spawn-at-startup "blueman-applet"
-    spawn-at-startup "polkit-gnome-authentication-agent-1"
-    spawn-at-startup "swaybg" "-m" "fill" "-c" "#1d1f21"
-    spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
-    spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
-    spawn-sh-at-startup "swayidle -w timeout 300 'swaylock -f' timeout 600 'swaylock -f' before-sleep 'swaylock -f'"
+      binds = {
+        "Mod+Return".action.spawn = "foot";
+        "Mod+D".action.spawn = [ "wofi" "--show" "drun" ];
+        "Super+Alt+L".action.spawn = "swaylock";
 
-    screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+        "Print".action.screenshot = [ ];
+        "Ctrl+Print".action.screenshot-screen = [ ];
+        "Alt+Print".action.screenshot-window = [ ];
 
-    binds {
-        Mod+Return { spawn "foot"; }
-        Mod+D { spawn "wofi" "--show" "drun"; }
-        Super+Alt+L { spawn "swaylock"; }
+        "XF86AudioRaiseVolume".allow-when-locked = true;
+        "XF86AudioRaiseVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1+" "-l" "1.0" ];
+        "XF86AudioLowerVolume".allow-when-locked = true;
+        "XF86AudioLowerVolume".action.spawn = [ "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-" ];
+        "XF86AudioMute".allow-when-locked = true;
+        "XF86AudioMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle" ];
+        "XF86AudioMicMute".allow-when-locked = true;
+        "XF86AudioMicMute".action.spawn = [ "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle" ];
 
-        Print { screenshot; }
-        Ctrl+Print { screenshot-screen; }
-        Alt+Print { screenshot-window; }
+        "XF86AudioPlay".allow-when-locked = true;
+        "XF86AudioPlay".action.spawn = [ "playerctl" "play-pause" ];
+        "XF86AudioStop".allow-when-locked = true;
+        "XF86AudioStop".action.spawn = [ "playerctl" "stop" ];
+        "XF86AudioPrev".allow-when-locked = true;
+        "XF86AudioPrev".action.spawn = [ "playerctl" "previous" ];
+        "XF86AudioNext".allow-when-locked = true;
+        "XF86AudioNext".action.spawn = [ "playerctl" "next" ];
 
-        XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
-        XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
-        XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
-        XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
-
-        XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
-        XF86AudioStop allow-when-locked=true { spawn-sh "playerctl stop"; }
-        XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
-        XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
-
-        XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
-        XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
-    }
-  '';
+        "XF86MonBrightnessUp".allow-when-locked = true;
+        "XF86MonBrightnessUp".action.spawn = [ "brightnessctl" "--class=backlight" "set" "+10%" ];
+        "XF86MonBrightnessDown".allow-when-locked = true;
+        "XF86MonBrightnessDown".action.spawn = [ "brightnessctl" "--class=backlight" "set" "10%-" ];
+      };
+    };
+  };
 
   # --- Additional Tools ---
   home.packages = with pkgs; [

@@ -14,6 +14,11 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    niri = {
+      url = "github:sodiboo/niri-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -23,6 +28,7 @@
       nix-cachyos-kernel,
       lanzaboote,
       home-manager,
+      niri,
       ...
     }@inputs:
     let
@@ -40,6 +46,7 @@
         modules = [
           ./configuration.nix
           lanzaboote.nixosModules.lanzaboote
+          niri.nixosModules.niri
 
           home-manager.nixosModules.home-manager
           {
