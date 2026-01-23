@@ -2,12 +2,13 @@
   config,
   pkgs,
   lib,
+  inputs,
   ...
 }:
 {
   # --- Boot & Kernel (Maximum Performance) ---
   boot = {
-    kernelPackages = lib.mkForce pkgs.linuxPackages_zen;
+    kernelPackages = lib.mkForce pkgs.cachyosKernels.linuxPackages-cachyos-rc;
 
     # Aggressive performance kernel parameters
     kernelParams = [
@@ -103,4 +104,6 @@
     initrd.systemd.enable = true;
     plymouth.enable = false;
   };
+
+  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
 }
