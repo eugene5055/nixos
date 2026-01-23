@@ -5,9 +5,7 @@
   ...
 }:
 {
-  imports = [
-    inputs.niri.homeModules.niri
-  ];
+  imports = [ ];
 
   home.username = "radean";
   home.homeDirectory = "/home/radean";

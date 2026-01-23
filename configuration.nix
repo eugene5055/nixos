@@ -7,6 +7,7 @@
 }:
 {
   imports = [
+    inputs.niri.nixosModules.niri
     ./hardware-configuration.nix
     ./modules/boot-kernel.nix
     ./modules/nix-settings.nix
@@ -24,4 +25,6 @@
     ./modules/storage.nix
     ./modules/state.nix
   ];
+
+  programs.niri.enable = true;
 }
