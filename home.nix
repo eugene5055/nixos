@@ -115,8 +115,7 @@
       echo "  ✓ GPU: Maximum performance mode"
       echo "  ✓ I/O Scheduler: Optimized"
       echo ""
-      echo "Compositor auto-disables for fullscreen games"
-      echo "Or manually toggle with: Alt + Shift + F12"
+      echo "Compositor: niri (Wayland)"
       echo ""
       echo "Launch games with: gamemoderun mangohud your-game"
       echo ""
@@ -134,7 +133,7 @@
       echo "🖥️  NORMAL MODE"
       echo ""
       echo "System in normal desktop mode"
-      echo "Compositor will re-enable when exiting fullscreen games"
+      echo "Compositor: niri (Wayland)"
       echo ""
 
       notify-send "🖥️ Normal Mode" "Desktop mode active"
@@ -147,7 +146,7 @@
       #!/usr/bin/env bash
       echo "=== Performance Configuration ==="
       echo "CPU Governor: $(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor 2>/dev/null)"
-      echo "Compositor: $(qdbus org.kde.KWin /Compositor org.kde.kwin.Compositing.active 2>/dev/null && echo 'Enabled' || echo 'Disabled')"
+      echo "Compositor: niri (Wayland)"
       echo "I/O Scheduler (nvme2): $(cat /sys/block/nvme2n1/queue/scheduler 2>/dev/null | grep -o '\[.*\]' | tr -d '[]' || echo 'N/A')"
       echo "Huge Pages: $(grep HugePages_Total /proc/meminfo | awk '{print $2}')"
       echo "GameMode: $(systemctl --user is-active gamemoded 2>/dev/null || echo 'inactive')"
@@ -170,8 +169,8 @@
     For older games:
     gamemoderun PROTON_USE_WINED3D=1 %command%
 
-    Disable compositor automatically:
-    ~/.local/bin/toggle-compositor && %command%; ~/.local/bin/toggle-compositor
+    Compositor:
+    niri (Wayland)
 
     === How to Apply ===
     1. Right-click game in Steam
@@ -182,6 +181,62 @@
   # --- Complete Usage Guide ---
   home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
 
+  # --- Niri Desktop Configuration ---
+  home.file.".config/niri/config.kdl".text = ''
+    // Minimal niri configuration with common desktop services.
+    // See https://kdl.dev and https://yalter.github.io/niri for full reference.
+
+    input {
+        keyboard {
+            numlock
+        }
+
+        touchpad {
+            tap
+            natural-scroll
+        }
+    }
+
+    layout {
+        gaps 12
+    }
+
+    spawn-at-startup "waybar"
+    spawn-at-startup "mako"
+    spawn-at-startup "nm-applet"
+    spawn-at-startup "blueman-applet"
+    spawn-at-startup "polkit-gnome-authentication-agent-1"
+    spawn-at-startup "swaybg" "-m" "fill" "-c" "#1d1f21"
+    spawn-sh-at-startup "wl-paste --type text --watch cliphist store"
+    spawn-sh-at-startup "wl-paste --type image --watch cliphist store"
+    spawn-sh-at-startup "swayidle -w timeout 300 'swaylock -f' timeout 600 'swaylock -f' before-sleep 'swaylock -f'"
+
+    screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+    binds {
+        Mod+Return { spawn "foot"; }
+        Mod+D { spawn "wofi" "--show" "drun"; }
+        Super+Alt+L { spawn "swaylock"; }
+
+        Print { screenshot; }
+        Ctrl+Print { screenshot-screen; }
+        Alt+Print { screenshot-window; }
+
+        XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
+        XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
+        XF86AudioMute        allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"; }
+        XF86AudioMicMute     allow-when-locked=true { spawn-sh "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"; }
+
+        XF86AudioPlay allow-when-locked=true { spawn-sh "playerctl play-pause"; }
+        XF86AudioStop allow-when-locked=true { spawn-sh "playerctl stop"; }
+        XF86AudioPrev allow-when-locked=true { spawn-sh "playerctl previous"; }
+        XF86AudioNext allow-when-locked=true { spawn-sh "playerctl next"; }
+
+        XF86MonBrightnessUp allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "+10%"; }
+        XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "--class=backlight" "set" "10%-"; }
+    }
+  '';
+
   # --- Additional Tools ---
   home.packages = with pkgs; [
     # Performance monitoring
@@ -190,13 +245,24 @@
 
     # Gaming utilities
     heroic # Epic/GOG launcher
-  ];
 
-  # --- KDE Plasma Optimizations ---
-  # Disable file indexing for performance
-  home.file.".config/baloofilerc".text = ''
-    [Basic Settings]
-    Indexing-Enabled=false
-  '';
+    # Wayland desktop essentials
+    waybar
+    wofi
+    foot
+    mako
+    swaybg
+    swayidle
+    swaylock
+    wl-clipboard
+    cliphist
+    grim
+    slurp
+    playerctl
+    brightnessctl
+    networkmanagerapplet
+    blueman
+    polkit_gnome
+  ];
 
 }

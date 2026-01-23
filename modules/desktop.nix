@@ -6,21 +6,24 @@
 }:
 {
   # --- Display Manager & Desktop ---
+  programs.niri.enable = true;
+
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
+    defaultSession = "niri";
   };
 
-  services.desktopManager.plasma6 = {
+  services.gnome.gnome-keyring.enable = true;
+  services.gvfs.enable = true;
+  services.udisks2.enable = true;
+  services.blueman.enable = true;
+
+  xdg.portal = {
     enable = true;
-    enableQt5Integration = true;
+    wlr.enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
   };
-
-  # Remove unused KDE packages
-  environment.plasma6.excludePackages = with pkgs.kdePackages; [
-    elisa
-    khelpcenter
-  ];
 
   services.flatpak.enable = true;
   services.printing.enable = true;
