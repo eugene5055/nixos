@@ -47,7 +47,6 @@
     __GL_SHADER_DISK_CACHE = "1";
     __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
     __GL_MaxFramesAllowed = "1";
-    KWIN_TRIPLE_BUFFER = "1";
     PROTON_ENABLE_NVAPI = "1";
   };
 }
