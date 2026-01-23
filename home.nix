@@ -139,35 +139,6 @@
   # --- Complete Usage Guide ---
   home.file."Documents/nixos-performance-guide.md".source = ./docs/nixos-performance-guide.md;
 
-  # --- Game Mode Desktop Shortcut ---
-  home.file.".local/share/applications/game-mode.desktop" = {
-    text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Game Mode
-      Comment=Launch the Steam session (login manager)
-      Exec=steam-session
-      Icon=applications-games
-      Terminal=false
-      Categories=Game;System;
-    '';
-    executable = true;
-  };
-
-  home.file."Desktop/Game Mode.desktop" = {
-    text = ''
-      [Desktop Entry]
-      Type=Application
-      Name=Game Mode
-      Comment=Launch the Steam session (login manager)
-      Exec=steam-session
-      Icon=applications-games
-      Terminal=false
-      Categories=Game;System;
-    '';
-    executable = true;
-  };
-
   # --- Additional Tools ---
   home.packages = with pkgs; [
     # Performance monitoring
