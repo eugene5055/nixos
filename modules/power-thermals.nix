@@ -16,8 +16,20 @@
   services.irqbalance.enable = lib.mkDefault true;
 
   # Scheduler and GPU Control (LACT)
-  services.system76-scheduler.enable = lib.mkDefault true;
+  services.system76-scheduler.enable = lib.mkForce false;
   services.lact.enable = lib.mkDefault true;
+
+  systemd.services.scx-lavd = {
+    description = "Sched-ext scx_lavd scheduler";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "sysinit.target" ];
+    serviceConfig = {
+      Type = "simple";
+      ExecStart = "${pkgs.scx}/bin/scx_lavd";
+      Restart = "on-failure";
+      RestartSec = "2s";
+    };
+  };
 
   # Swap
   zramSwap.enable = lib.mkDefault true;
