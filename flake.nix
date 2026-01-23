@@ -52,7 +52,12 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.radean = import ./home.nix;
+            home-manager.users.radean = {
+              imports = [
+                ./home.nix
+                niri.homeModules.niri
+              ];
+            };
             home-manager.backupFileExtension = "backup";
           }
         ];
