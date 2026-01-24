@@ -68,6 +68,13 @@
   nixpkgs.overlays = [
     (final: prev: {
       gamescope = prev.gamescope.overrideAttrs (old: {
+        nativeBuildInputs =
+          let
+            cmakePolicyWrapper = prev.writeShellScriptBin "cmake" ''
+              exec ${prev.cmake}/bin/cmake -DCMAKE_POLICY_VERSION_MINIMUM=3.5 "$@"
+            '';
+          in
+          [ cmakePolicyWrapper ] ++ (old.nativeBuildInputs or [ ]);
         version = "3.16.2";
         src = builtins.fetchGit {
           url = "https://github.com/ValveSoftware/gamescope.git";
