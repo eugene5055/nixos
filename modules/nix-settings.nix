@@ -72,7 +72,7 @@
         src = builtins.fetchGit {
           url = "https://github.com/ValveSoftware/gamescope.git";
           rev = "2ccfa53b619d43d7a08f2457474f471552b7e6fb";
-          fetchSubmodules = true;
+          submodules = true;
         };
       });
     })
