@@ -74,6 +74,10 @@
           rev = "2ccfa53b619d43d7a08f2457474f471552b7e6fb";
           submodules = true;
         };
+        # The pending system-libraries patch does not apply to 3.16.2.
+        patches = lib.take 2 old.patches;
+        # Without that patch, allow subprojects to build.
+        mesonInstallFlags = [ ];
       });
     })
   ];
