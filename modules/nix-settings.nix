@@ -78,6 +78,13 @@
         patches = lib.take 2 old.patches;
         # Without that patch, allow subprojects to build.
         mesonInstallFlags = [ ];
+        # 3.16.2 does not define these Meson options.
+        mesonFlags =
+          lib.filter
+            (flag:
+              !(lib.hasPrefix "-Dglm_include_dir=" flag || lib.hasPrefix "-Dstb_include_dir=" flag)
+            )
+            (old.mesonFlags or [ ]);
       });
     })
   ];
