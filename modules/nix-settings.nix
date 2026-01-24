@@ -86,9 +86,17 @@
           rev = "2ccfa53b619d43d7a08f2457474f471552b7e6fb";
           submodules = true;
         };
-        # The pending system-libraries patch does not apply to 3.16.2.
-        patches = lib.take 2 old.patches;
-        # Without that patch, allow subprojects to build.
+        # Disable nixpkgs patching for the pinned upstream revision.
+        patches = [ ];
+        # The upstream install script expects runtime paths that do not
+        # exist in the Nix build sandbox; binaries are already installed.
+        postPatch =
+          (old.postPatch or "")
+          + ''
+            substituteInPlace meson.build \
+              --replace-fail "meson.add_install_script('default_scripts_install.sh')" ""
+          '';
+        # Without nixpkgs system-libraries patching, allow subprojects to build.
         mesonInstallFlags = [ ];
         # 3.16.2 does not define these Meson options.
         mesonFlags =
