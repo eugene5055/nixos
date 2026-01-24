@@ -77,6 +77,7 @@
           [
             cmakePolicyWrapper
             prev.glm
+            prev.stb
           ]
           ++ (old.nativeBuildInputs or [ ]);
         version = "3.16.2";
