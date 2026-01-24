@@ -65,5 +65,16 @@
 
   nixpkgs.config.allowUnfree = true;
 
-
+  nixpkgs.overlays = [
+    (final: prev: {
+      gamescope = prev.gamescope.overrideAttrs (old: {
+        version = "3.16.2";
+        src = builtins.fetchGit {
+          url = "https://github.com/ValveSoftware/gamescope.git";
+          rev = "2ccfa53b619d43d7a08f2457474f471552b7e6fb";
+          fetchSubmodules = true;
+        };
+      });
+    })
+  ];
 }
