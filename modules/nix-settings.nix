@@ -91,8 +91,15 @@
         # The upstream install script expects runtime paths that do not
         # exist in the Nix build sandbox; binaries are already installed.
         postPatch =
-          (old.postPatch or "")
-          + ''
+          ''
+            # Gamescope 3.16.2 no longer has the @out@ placeholder in
+            # src/reshade_effect_manager.cpp, so skip the nixpkgs
+            # substitution that now fails during patchPhase.
+            patchShebangs subprojects/libdisplay-info/tool/gen-search-table.py
+            substituteInPlace src/Utils/Process.cpp \
+              --subst-var-by "gamescopereaper" "$out/bin/gamescopereaper"
+            patchShebangs default_extras_install.sh
+
             substituteInPlace meson.build \
               --replace-fail "meson.add_install_script('default_scripts_install.sh')" ""
           '';
