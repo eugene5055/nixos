@@ -15,8 +15,6 @@
   services.thermald.enable = lib.mkDefault false;
   services.irqbalance.enable = lib.mkDefault true;
 
-  # Scheduler and GPU Control (LACT)
-  services.system76-scheduler.enable = lib.mkForce false;
   services.lact.enable = lib.mkDefault true;
 
   systemd.services.scx-lavd = {
