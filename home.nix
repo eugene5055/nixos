@@ -142,11 +142,9 @@
   # --- Additional Tools ---
   home.packages = with pkgs; [
     # Performance monitoring
-    corectrl
+
     lact
 
-    # Gaming utilities
-    heroic # Epic/GOG launcher
   ];
 
   # --- KDE Plasma Optimizations ---
