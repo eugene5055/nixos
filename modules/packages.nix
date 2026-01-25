@@ -39,5 +39,10 @@
 
     # Notifications
     libnotify
+
+    # Media
+    vlc
+    transmission_4-qt
+
   ];
 }
