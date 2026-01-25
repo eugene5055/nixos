@@ -12,11 +12,9 @@
 
     # Gaming & Windows Compatibility
     lutris
-    bottles
     protonplus
     gamescope
     mangohud
-    goverlay
     vkbasalt
     vulkan-tools
     pkgs.pkgsi686Linux.vulkan-tools
@@ -31,7 +29,6 @@
     # System & Monitoring
     nvtopPackages.full
     btop
-    htop
     intel-gpu-tools
     sbctl
 
