@@ -31,6 +31,7 @@
     btop
     intel-gpu-tools
     sbctl
+    git
 
     # Performance tools
     linuxPackages.cpupower
