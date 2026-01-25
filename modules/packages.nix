@@ -13,7 +13,7 @@
     # Gaming & Windows Compatibility
     lutris
     bottles
-    protonup-qt
+    protonplus
     gamescope
     mangohud
     goverlay

@@ -17,7 +17,6 @@
 
   programs.gamescope = {
     enable = true;
-    capSysNice = true; # Adds the CAP_SYS_NICE capability to the binary
   };
 
   # GameMode - automatic performance optimization for games
