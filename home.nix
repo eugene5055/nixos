@@ -9,9 +9,6 @@
   # --- Performance Environment Variables ---
   home.sessionVariables = {
     # Gaming performance
-    MANGOHUD = "1";
-    ENABLE_VKBASALT = "1";
-
     # NVIDIA optimizations
     __GL_SHADER_DISK_CACHE_PATH = "$HOME/.cache/nvidia";
 
@@ -43,7 +40,7 @@
       # Gaming shortcuts
       "steam-perf" = "gamemoderun steam";
       "lutris-perf" = "gamemoderun lutris";
-      "game-vk14" = "DISABLE_EXTERNAL_VULKAN_LAYERS=1 gamemoderun mangohud";
+      "game-vk14" = "DISABLE_EXTERNAL_VULKAN_LAYERS=1 gamemoderun";
 
       # System info
       "sys-info" =
@@ -54,9 +51,7 @@
     bashrcExtra = ''
       # Launch any game with performance optimizations
       game() {
-
-        ENABLE_VKBASALT=1 gamemoderun mangohud "$@"
-
+        gamemoderun "$@"
       }
     '';
   };
