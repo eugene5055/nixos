@@ -16,8 +16,6 @@
     __GL_SHADER_DISK_CACHE_PATH = "$HOME/.cache/nvidia";
 
     # Vulkan optimizations
-    # Include both 64-bit and 32-bit ICDs so Proton/DXVK can initialize Vulkan.
-    VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/nvidia_icd.x86_64.json:/run/opengl-driver-32/share/vulkan/icd.d/nvidia_icd.i686.json";
 
     # Wine/Proton optimizations
     WINEFSYNC = "1";
@@ -45,6 +43,7 @@
       # Gaming shortcuts
       "steam-perf" = "gamemoderun steam";
       "lutris-perf" = "gamemoderun lutris";
+      "game-vk14" = "DISABLE_EXTERNAL_VULKAN_LAYERS=1 gamemoderun mangohud";
 
       # System info
       "sys-info" =
@@ -114,6 +113,15 @@
     executable = true;
   };
 
+  home.file.".local/bin/run-vk14-clean" = {
+    text = ''
+      #!/usr/bin/env bash
+      export DISABLE_EXTERNAL_VULKAN_LAYERS=1
+      exec "$@"
+    '';
+    executable = true;
+  };
+
   # --- Steam Launch Options Reference ---
   home.file."Documents/steam-launch-options.txt".text = ''
     === Recommended Steam Launch Options ===
@@ -123,6 +131,9 @@
 
     For troubleshooting:
     gamemoderun PROTON_LOG=1 %command%
+
+    For DX12 descriptor heap debugging:
+    VKD3D_DEBUG=info VKD3D_CONFIG=dxr11,descriptor_heaps %command%
 
     For older games:
     gamemoderun PROTON_USE_WINED3D=1 %command%
