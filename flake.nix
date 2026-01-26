@@ -2,7 +2,7 @@
   description = "High-Performance NixOS Configuration (2026)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     lanzaboote = {
