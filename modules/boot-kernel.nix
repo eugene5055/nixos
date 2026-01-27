@@ -105,5 +105,17 @@
     plymouth.enable = false;
   };
 
-  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlays.pinned ];
+  nixpkgs.overlays = [
+    inputs.nix-cachyos-kernel.overlays.pinned
+    (final: prev: {
+      gamescope = prev.gamescope.overrideAttrs (old: {
+        src = prev.fetchFromGitHub {
+          owner = "ValveSoftware";
+          repo = "gamescope";
+          rev = "master";
+          hash = "sha256-iTjOAl1L2UOLvefLFwXatfbp5EjMNefTG6YnBytJLqo=";
+        };
+      });
+    })
+  ];
 }
